@@ -7,19 +7,19 @@
 
 (*Problem 1: function my_last that takes a list and returns the last element of the list*)
 let rec my_last xs =
-   match List.length xs with
-   | 0 -> failwith "Empty List"
-   | 1 -> List.hd xs
-   | _ -> my_last (List.tl xs)
+   match xs with
+   | [] -> failwith "Empty List"
+   | [x] -> x
+   | _ :: t -> my_last t
 ;;
 
 (*Problem 2: function my_init that takes a list and returns a new list containing all of the elements of
 the input list except for the last element*)
 let rec my_init xs = 
-   match List.length xs with
-   | 0 -> failwith "Empty List"
-   | 1 -> []
-   | _ -> List.hd xs :: (my_init (List.tl xs))
+   match xs with
+   | [] -> failwith "Empty List"
+   | [x] -> []
+   | x :: t -> x :: (my_init t)
 ;;
 
 (*Problem 3: function my_replace that takes a pair of values and a list and returns a new list such that
@@ -112,5 +112,44 @@ combine key-value pairs with duplicate keys*)
 let rec group l =
    match l with
    | Nil -> Nil
-   | Node (a, b, c) -> Node (a, (key_values a l), group c)
+   | Node (a, b, c) -> Node (a, (key_values a l), group (remove a c))
 ;;
+
+(*Problem 14: function invert with type (α, β) kvlist → (β, α) kvlist. This function simply “flips”
+each key-value pair in the collection*)
+let rec invert l =
+   match l with
+   | Nil -> Nil
+   | Node (a, b, c) -> Node (b, a, invert c)
+;;
+
+(*Problem 15: function kv_filter with type (α → β → bool) → (α, β) kvlist → (α, β) kvlist. This
+function should be identical to the filter function but work over kvlist values as opposed to lists*)
+let rec kv_filter f l =
+   match l with
+   | Nil -> Nil
+   | Node (a, b, c) when f a b -> Node (a, b, kv_filter f c)
+   | Node (a, b, c) -> kv_filter f c
+;;
+
+(*Checks whether the inputted b is less than ten returns true if b < 10*)
+let rec less_ten a b = 
+   match b with
+   | _ when b < 10 -> true
+   | _ -> false
+;;
+
+(*Problem 16: function kv_map with type (α → β → γ ∗ δ) → (α, β) kvlist → (γ, δ) kvlist. This
+function should be identical to the map function but work over kvlist values as opposed to lists.*)
+let rec kv_map f l =
+   match l with
+   | Nil -> Nil
+   | Node (a, b, c) -> Node (fst(f a b), snd(f a b), kv_map f c)
+;;
+
+(*Adds ten to b, returns tuples of a and new b*)
+let rec add_ten a b = (a, (b + 10));;
+
+(*Problem 17: function count_keys_by_val with type int → (α, β) kvlist → (β, int) kvlist. The first parameter is a “threshold” value. 
+The function returns the number of key-value pairs each value is associated such that the number of key-value pairs is larger than the threshold value*)
+

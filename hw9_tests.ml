@@ -76,8 +76,32 @@ assert_equal (Node ('a', 1, Nil)) (combine (Node ('a', 1, Nil)) Nil) "combine (N
 assert_equal ((Node ('b', 1, (Node ('a', 2, Node ('a', 3, Nil)))))) (combine (Node ('b', 1, Nil)) (Node ('a', 2, Node ('a', 3, Nil)))) "combine (Node ('b', 1, Nil)) (Node ('a', 2, Node ('a', 3, Nil)))";;
 assert_equal ((Node ('a', 2, Node ('a', 3, Nil)))) (combine  Nil (Node ('a', 2, Node ('a', 3, Nil)))) "combine  Nil (Node ('a', 2, Node ('a', 3, Nil)))";;
 
-(* Quest 13: group tests *)
+(* Question 13: group tests *)
 assert_equal (Nil) (group Nil) "group Nil";;
 assert_equal (Node ('a', [1], Nil)) (group (Node ('a', 1, Nil))) "group (Node ('a', 1, Nil))";;
 assert_equal (Node ('a', [1], Node ('b', [2], Nil))) (group (Node ('a', 1, Node ('b', 2, Nil)))) "group (Node ('a', 1, Node ('b', 2, Nil)))";;
 assert_equal (Node ('a', [1; 2], Nil)) (group (Node ('a', 1, Node ('a', 2, Nil)))) "group (Node ('a', 1, Node ('a', 2, Nil)))";;
+assert_equal (Node ('a', [1; 2; 3], Node ('b', [2], Node ('c', [4], Nil)))) (group (Node ('a', 1, Node ('b', 2, Node ('c', 4, Node ('a', 2, Node ('a', 3, Nil))))))) "group (Node ('a', 1, Node ('b', 2, Node ('c', 4, Node ('a', 2, Node ('a', 3, Nil))))))";;
+
+(* Question 14: invert tests *)
+assert_equal (Nil) (invert Nil) "invert Nil";;
+assert_equal (Node (1, 'a', Nil)) (invert (Node ('a', 1, Nil))) "invert (Node ('a', 1, Nil))";;
+assert_equal (Node (1, 'a', Node (2, 'b', Nil))) (invert (Node ('a', 1, Node ('b', 2, Nil)))) "invert (Node ('a', 1, Node ('b', 2, Nil)))";;
+
+(* Question 15: kv_filter tests *)
+(* less_ten tests *)
+assert_equal (true) (less_ten 'a' 5) "less_ten 'a' 5";;
+assert_equal (false) (less_ten 'a' 11) "less_ten 'a' 5";;
+(* kv_filter tests *)
+assert_equal (Nil) (kv_filter less_ten Nil) "kv_filter less_ten Nil";;
+assert_equal (Node ('a', 1, Node ('b', 2, Nil))) (kv_filter less_ten (Node ('a', 1, Node ('b', 2, Nil)))) "kv_filter less_ten (Node ('a', 1, Node ('b', 2, Nil)))";;
+assert_equal (Node ('a', 1, Nil)) (kv_filter less_ten (Node ('a', 1, Node ('b', 11, Nil)))) "kv_filter less_ten (Node ('a', 1, Nil))";;
+assert_equal (Node ('a', 1, Nil)) (kv_filter less_ten (Node ('c', 12, (Node ('a', 1, (Node ('b', 11, Nil))))))) "kv_filter less_ten (Node ('c', 12, (Node ('a', 1, (Node ('b', 11, Nil))))))";;
+
+(* Question 16: kv_map tests *)
+(* add_ten tests *)
+assert_equal ('a',15) (add_ten 'a' 5) "add_ten 'a' 5";;
+(* kv_map tests *)
+assert_equal (Nil) (kv_map add_ten Nil) "kv_map add_ten Nil";;
+assert_equal (Node ('a', 11, Node ('b', 12, Nil))) (kv_map add_ten (Node ('a', 1, Node ('b', 2, Nil)))) "kv_map add_ten (Node ('a', 1, Node ('b', 2, Nil)))";;
+assert_equal (Node ('c', 22, (Node ('a', 11, (Node ('b', 21, Nil)))))) (kv_map add_ten (Node ('c', 12, (Node ('a', 1, (Node ('b', 11, Nil))))))) "kv_map add_ten (Node ('c', 12, (Node ('a', 1, (Node ('b', 11, Nil))))))";;
