@@ -61,4 +61,56 @@ let rec my_range_sum v1 v2 =
 type ('a, 'b) kvlist = Node of 'a * 'b * ('a, 'b) kvlist
 | Nil ;;
 
-let insert 'a 'b ('a, 'b) kvlist = Node of ()
+(*Problem 7: function insert with type α → β → (α, β) kvlist → (α, β) kvlist*)
+let insert k v l = Node (k, v, l);;
+
+(*Problem 8: function remove with type α → (α, β) kvlist → (α, β) kvlist that removes all key-value
+pairs in a collection that have a given key*)
+let rec remove k l = 
+   match l with
+   | Nil -> Nil
+   | Node (a, b, c) when a = k -> remove k c
+   | Node (a, b, c) -> Node (a, b, (remove k c))
+;;
+
+(*Problem 9: function size with type (α, β) kvlist → int. The size function should return the number
+of key-value pairs in the collection, where size Nil is 0*)
+let rec size l =
+   match l with 
+   | Nil -> 0
+   | Node (a, b, t) -> 1 + size t
+;;
+
+(*Problem 10: function has_key with type α → (α, β) kvlist → bool, which returns true if the collection
+contains a key-value pair with the given key, and false otherwise*)
+let rec has_key k l =
+   match l with
+   | Nil -> false
+   | Node (a, b, c) when k = a -> true
+   | Node (a, b, c) -> has_key k c
+;;
+
+
+(*Problem 11: function key_values with type α → (α, β) kvlist → β list. This function should return
+a list of the values for a given key in a collection*)
+let rec key_values k l = 
+   match l with
+   | Nil -> []
+   | Node (a, b, c) when k = a -> [b] @ (key_values k c) 
+   | Node (a, b, c) -> (key_values k c)
+;;
+
+(*Problem 12: function combine with type (α, β) kvlist → (α, β) kvlist → (α, β) kvlist. This function should work the same as (@) but for key-value collections*)
+let rec combine x y = 
+   match x with
+   | Nil -> y
+   | Node (a, b, c) -> Node (a, b, (combine c y))
+;;
+
+(*Problem 13: function group with type (α, β) kvlist → (α, β list) kvlist. This function should
+combine key-value pairs with duplicate keys*)
+let rec group l =
+   match l with
+   | Nil -> Nil
+   | Node (a, b, c) -> Node (a, (key_values a l), group c)
+;;
