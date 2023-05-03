@@ -152,4 +152,30 @@ let rec add_ten a b = (a, (b + 10));;
 
 (*Problem 17: function count_keys_by_val with type int → (α, β) kvlist → (β, int) kvlist. The first parameter is a “threshold” value. 
 The function returns the number of key-value pairs each value is associated such that the number of key-value pairs is larger than the threshold value*)
+let rec find_val_dup v l =
+   match l with
+   | Nil -> 0
+   | Node (a, b, c) when b = v -> 1 + find_val_dup v c
+   | Node (a, b, c) -> find_val_dup v c
+;;
+
+let meet_threshold n l = 
+   match l with
+   | Nil -> false
+   | Node (a, b, c) when (find_val_dup b l) > n -> true
+   | Node (a, b, c) -> false
+;;
+
+let rec count_keys_by_val n l = kv_filter meet_threshold l;;
+ 
+
+(*match l with
+   | Nil -> Nil
+   | Node (a, b, c) when (find_val_dup b l) > n -> Node (b, (find_val_dup b l), count_keys_by_val n c) 
+   | Node (a, b, c) -> count_keys_by_val n c
+;;
+*)
+
+
+
 

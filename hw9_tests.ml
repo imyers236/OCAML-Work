@@ -105,3 +105,10 @@ assert_equal ('a',15) (add_ten 'a' 5) "add_ten 'a' 5";;
 assert_equal (Nil) (kv_map add_ten Nil) "kv_map add_ten Nil";;
 assert_equal (Node ('a', 11, Node ('b', 12, Nil))) (kv_map add_ten (Node ('a', 1, Node ('b', 2, Nil)))) "kv_map add_ten (Node ('a', 1, Node ('b', 2, Nil)))";;
 assert_equal (Node ('c', 22, (Node ('a', 11, (Node ('b', 21, Nil)))))) (kv_map add_ten (Node ('c', 12, (Node ('a', 1, (Node ('b', 11, Nil))))))) "kv_map add_ten (Node ('c', 12, (Node ('a', 1, (Node ('b', 11, Nil))))))";;
+
+(* Question 17: count_keys_by_val tests *)
+assert_equal (Nil) (count_keys_by_val 0 Nil) "count_keys_by_val 0 Nil";;
+assert_equal (Node (1, 1, Nil)) (count_keys_by_val 0 (Node ('a', 1, Nil))) "count_keys_by_val 0 (Node ('a', 1, Nil))";;
+assert_equal (Nil) (count_keys_by_val 1 (Node ('a', 1, Nil))) "count_keys_by_val 1 (Node ('a', 1, Nil))";;
+assert_equal (Node (1, 2, Nil)) (count_keys_by_val 1 (Node ('a', 1, Node ('b', 1, Nil))) ) "count_keys_by_val 1 (Node ('a', 1, Node ('b', 1, Nil))) ";;
+assert_equal (Nil) (count_keys_by_val 1 (Node ('a', 1, Node ('b', 2, Nil)))) "count_keys_by_val 1 (Node ('a', 1, Node ('b', 2, Nil)))";;
